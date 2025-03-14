@@ -66,7 +66,7 @@ try:
     with engine.connect() as conn:
         # Execute a simple query to test the connection
         result = conn.execute("SELECT 1")
-        print("✅ Database connection successful!")
+        print("✅ Database connection very successful!")
 except Exception as e:
     # Print an error message if the connection fails
     print(f"❌ Connection failed: {e}")
