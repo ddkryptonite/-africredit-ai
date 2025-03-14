@@ -58,30 +58,34 @@ if None in [DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT]:
 
 # Create the Redshift connection
 try:
-    # Create a database engine using SQLAlchemy
-    connection_string = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
-    engine = create_engine(connection_string, connect_args={"options": "-c search_path=public"})
+    connection_url = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
+    
+    engine = create_engine(connection_url, connect_args={"options": "-c search_path=public"})
 
-    # Test the connection
+
     with engine.connect() as conn:
-        # Execute a simple query to test the connection
         result = conn.execute("SELECT 1")
-        print("✅ Database connection very successful!")
+        st.write("✅ Database connection successful!")
+
 except Exception as e:
-    # Print an error message if the connection fails
-    print(f"❌ Connection failed: {e}")
+    st.write(f"❌ Connection failed: {e}")
+    engine = None  # Prevent further errors if the connection fails
 
-# Load data
-with engine.connect() as connection:
-    customers_df = pd.read_sql_query("SELECT * FROM customers", con=connection)
-    creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=connection)
-    loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=connection)
-    mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=connection)
-    transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=connection)
-    mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=connection)
+# Load data only if connection is successful
+if engine:
+    try:
+        with engine.connect() as conn:
+            customers_df = pd.read_sql_query("SELECT * FROM customers", con=conn.connection)
+            creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=conn.connection)
+            loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=conn.connection)
+            mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=conn.connection)
+            transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=conn.connection)
+            mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=conn.connection)
+        
+        st.write("✅ Data loaded successfully!")
 
-
-
+    except Exception as e:
+        st.write(f"❌ Data loading failed: {e}")
 
 # Feature engineering
 mobilemoney_features = mobilemoney_df.groupby('CustomerID').agg({'Amount': ['sum', 'mean', 'count'], 'Balance': 'mean'}).reset_index()
