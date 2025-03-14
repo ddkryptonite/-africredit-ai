@@ -37,7 +37,9 @@ st.sidebar.markdown("""
 """)
 st.sidebar.title("Note:Still Under Development.CI/CD.")
 
-
+# Database connection
+# engine = create_engine("mysql+mysqlconnector://root:Danieledem_7@localhost/credit")
+# connection = engine.connect()
 
 
 
@@ -48,17 +50,25 @@ DB_HOST = os.getenv("DB_HOST")  # Redshift cluster endpoint
 DB_NAME = os.getenv("DB_NAME")
 DB_PORT = os.getenv("DB_PORT", "5439")  # Default Redshift port
 
+
+# Check if all credentials are set
+if None in [DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT]:
+    st.error("Database environment variables are not set correctly.")
+    st.stop()
+
 # Create the Redshift connection
 engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
 
 # Load data
-customers_df = pd.read_sql("SELECT * FROM customers", engine)
-creditscorehistory_df = pd.read_sql("SELECT * FROM creditscorehistory", engine)
-loanapplications_df = pd.read_sql("SELECT * FROM loanapplications", engine)
-mobileusage_df = pd.read_sql("SELECT * FROM mobileusage", engine)
-transactions_df = pd.read_sql("SELECT * FROM transactions", engine)
-mobilemoney_df = pd.read_sql("SELECT * FROM mobilemoneytransactions", engine)
+with engine.connect() as connection:
+    customers_df = pd.read_sql_query("SELECT * FROM customers", con=connection)
+    creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=connection)
+    loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=connection)
+    mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=connection)
+    transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=connection)
+    mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=connection)
+
 
 
 
