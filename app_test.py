@@ -37,9 +37,7 @@ st.sidebar.markdown("""
 """)
 st.sidebar.title("Note:Still Under Development.CI/CD.")
 
-# Database connection
-# engine = create_engine("mysql+mysqlconnector://root:Danieledem_7@localhost/credit")
-# connection = engine.connect()
+
 
 
 
@@ -57,7 +55,7 @@ if None in [DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT]:
     st.stop()
 
 # Create the Redshift connection
-engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
+engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",client_encoding="utf8")
 
 
 # Load data
