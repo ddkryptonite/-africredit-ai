@@ -1,3 +1,4 @@
+import streamlit as st
 import os
 from sqlalchemy import create_engine
 
@@ -11,6 +12,6 @@ try:
     engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
     with engine.connect() as conn:
         result = conn.execute("SELECT 1")
-        print("✅ Database connection successful!")
+        st.write("✅ Database connection successful!")
 except Exception as e:
-    print(f"❌ Connection failed: {e}")
+    st.write(f"❌ Connection failed: {e}")
