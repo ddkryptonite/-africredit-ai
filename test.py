@@ -40,3 +40,7 @@ if engine:
 
     except Exception as e:
         st.write(f"❌ Data loading failed: {e}")
+
+
+st.write("Columns in mobilemoney_df:", mobilemoney_df.columns)
+
