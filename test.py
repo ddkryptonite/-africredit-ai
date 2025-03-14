@@ -12,7 +12,7 @@ DB_PORT = os.getenv("DB_PORT", "5439")
 
 # Initialize database connection
 try:
-    connection_url = f"redshift+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    connection_url = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
     
     engine = create_engine(connection_url, connect_args={"options": "-c standard_conforming_strings=off"})
 
