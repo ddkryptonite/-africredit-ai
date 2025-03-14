@@ -72,13 +72,12 @@ except Exception as e:
     print(f"❌ Connection failed: {e}")
 
 # Load data
-with engine.connect() as connection:
-    customers_df = pd.read_sql_query("SELECT * FROM customers", con=connection)
-    creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=connection)
-    loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=connection)
-    mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=connection)
-    transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=connection)
-    mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=connection)
+customers_df = pd.read_sql_query("SELECT * FROM customers", con=engine)
+creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=engine)
+loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=engine)
+mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=engine)
+transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=engine)
+mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=engine)
 
 
 
