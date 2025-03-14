@@ -2,6 +2,7 @@ import streamlit as st
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.engine import URL  # ✅ Import this
+import pandas as pd
 
 DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
@@ -25,7 +26,17 @@ try:
     with engine.connect() as conn:
         # Execute a simple query to test the connection
         result = conn.execute("SELECT 1")
-        st.write("✅ Database connection successful!")
+        st.write("✅ Database connection very very successful!")
 except Exception as e:
     # Print an error message if the connection fails
     st.write(f"❌ Connection failed: {e}")
+
+# Load data
+with engine.connect() as connection:
+    customers_df = pd.read_sql_query("SELECT * FROM customers", con=connection)
+    creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=connection)
+    loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=connection)
+    mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=connection)
+    transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=connection)
+    mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=connection)
+
