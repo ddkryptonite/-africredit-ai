@@ -37,17 +37,9 @@ st.sidebar.markdown("""
 """)
 st.sidebar.title("Note:Still Under Development.CI/CD.")
 
-# Database connection
-# engine = create_engine("mysql+mysqlconnector://root:Danieledem_7@localhost/credit")
-# connection = engine.connect()
 
-# Load data
-# customers_df = pd.read_sql("SELECT * FROM customers", engine)
-# creditscorehistory_df = pd.read_sql("SELECT * FROM creditscorehistory", engine)
-# loanapplications_df = pd.read_sql("SELECT * FROM loanapplications", engine)
-# mobileusage_df = pd.read_sql("SELECT * FROM mobileusage", engine)
-# transactions_df = pd.read_sql("SELECT * FROM transactions", engine)
-# mobilemoney_df = pd.read_sql("SELECT * FROM mobilemoneytransactions", engine)
+
+
 
 # Access environment variables
 DB_USERNAME = os.getenv("DB_USERNAME")
@@ -59,6 +51,14 @@ DB_PORT = os.getenv("DB_PORT", "5439")  # Default Redshift port
 # Create the Redshift connection
 engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
+
+# Load data
+customers_df = pd.read_sql("SELECT * FROM customers", engine)
+creditscorehistory_df = pd.read_sql("SELECT * FROM creditscorehistory", engine)
+loanapplications_df = pd.read_sql("SELECT * FROM loanapplications", engine)
+mobileusage_df = pd.read_sql("SELECT * FROM mobileusage", engine)
+transactions_df = pd.read_sql("SELECT * FROM transactions", engine)
+mobilemoney_df = pd.read_sql("SELECT * FROM mobilemoneytransactions", engine)
 
 
 
