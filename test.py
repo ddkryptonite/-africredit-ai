@@ -34,13 +34,13 @@ except Exception as e:
 # Load data
 if engine:
     try:
-        with engine.connect() as connection:
-            customers_df = pd.read_sql_query("SELECT * FROM customers", con=connection)
-            creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=connection)
-            loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=connection)
-            mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=connection)
-            transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=connection)
-            mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=connection)
+        with engine.connect() as conn:
+            customers_df = pd.read_sql_query("SELECT * FROM customers", con=conn)
+            creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=conn)
+            loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=conn)
+            mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=conn)
+            transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=conn)
+            mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=conn)
         
         st.write("✅ Data loaded successfully!")
 
