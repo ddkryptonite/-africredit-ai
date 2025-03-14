@@ -37,7 +37,9 @@ st.sidebar.markdown("""
 """)
 st.sidebar.title("Note:Still Under Development.CI/CD.")
 
-
+# Database connection
+# engine = create_engine("mysql+mysqlconnector://root:Danieledem_7@localhost/credit")
+# connection = engine.connect()
 
 
 
@@ -46,7 +48,7 @@ DB_USERNAME = os.getenv("DB_USERNAME")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_HOST = os.getenv("DB_HOST")  # Redshift cluster endpoint
 DB_NAME = os.getenv("DB_NAME")
-DB_PORT = os.getenv("DB_PORT", "5439")  # Default Redshift port
+DB_PORT = os.getenv("DB_PORT")  # Default Redshift port
 
 
 # Check if all credentials are set
@@ -55,8 +57,19 @@ if None in [DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT]:
     st.stop()
 
 # Create the Redshift connection
-engine = create_engine(f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",client_encoding="utf8")
+try:
+    # Create a database engine using SQLAlchemy
+    connection_string = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
+    engine = create_engine(connection_string, connect_args={"options": "-c search_path=public"})
 
+    # Test the connection
+    with engine.connect() as conn:
+        # Execute a simple query to test the connection
+        result = conn.execute("SELECT 1")
+        print("✅ Database connection successful!")
+except Exception as e:
+    # Print an error message if the connection fails
+    print(f"❌ Connection failed: {e}")
 
 # Load data
 with engine.connect() as connection:
