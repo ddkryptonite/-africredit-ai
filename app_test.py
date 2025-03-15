@@ -82,10 +82,10 @@ if engine:
             transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=conn.connection)
             mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=conn.connection)
         
-        st.write("✅ Data loaded successfully!")
+        print("✅ Data loaded successfully!")
 
     except Exception as e:
-        st.write(f"❌ Data loading failed: {e}")
+        print(f"❌ Data loading failed: {e}")
 
 # Feature engineering
 mobilemoney_features = mobilemoney_df.groupby('customerid').agg({'amount': ['sum', 'mean', 'count'], 'balance': 'mean'}).reset_index()
