@@ -186,14 +186,14 @@ def main():
     st.divider()
 
     # Fetch unique countries from the approval_rates DataFrame
-    countries = approval_rates["Country"].unique()
+    countries = approval_rates["country"].unique()
 
     # Calculate credit scores and risk levels for each country
     # Calculate credit scores and risk levels for each country
     country_data = []
     for country in countries:
         # Filter customers by country
-        country_customers = approval_rates[approval_rates["Country"] == country]
+        country_customers = approval_rates[approval_rates["country"] == country]
         
         # Calculate average credit score and risk level for the country
         total_credit_score = 0
