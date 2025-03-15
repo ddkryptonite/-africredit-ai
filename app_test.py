@@ -201,15 +201,15 @@ def main():
         for _, customer in country_customers.iterrows():
             # Predict credit score for each customer
             customer_features = {
-                'Income': customer['Income'],
-                'AccountAge': customer['AccountAge'],
-                'EmploymentStatus_Employed': 1 if customer['EmploymentStatus'] == 'Employed' else 0,
-                'EmploymentStatus_Unemployed': 1 if customer['EmploymentStatus'] == 'Unemployed' else 0,                
-                'Loan Amount': customer['LoanAmount'],  # Accessible from approval_rates
-                'AverageMobileMoneyBalance': customer['AverageMobileMoneyBalance'],
-                'MonthlyDataUsage': customer['MonthlyDataUsage'],
-                'AverageMonthlyCalls': customer['AverageMonthlyCalls'],
-                'TotalMobileMoneyAmount': customer['TotalMobileMoneyAmount']
+                'Income': customer['income'],
+                'AccountAge': customer['accountage'],
+                'EmploymentStatus_Employed': 1 if customer['employmentstatus'] == 'employed' else 0,
+                'EmploymentStatus_Unemployed': 1 if customer['employmentstatus'] == 'unemployed' else 0,                
+                'Loan Amount': customer['loanamount'],  # Accessible from approval_rates
+                'AverageMobileMoneyBalance': customer['averagemobilemoneybalance'],
+                'MonthlyDataUsage': customer['monthlydatausage'],
+                'AverageMonthlyCalls': customer['averagemonthlycalls'],
+                'TotalMobileMoneyAmount': customer['totalmobilemoneyamount']
             }
             credit_score, risk_level, _, _ = predict_credit_score(customer_features)
             total_credit_score += credit_score
