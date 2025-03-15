@@ -152,7 +152,7 @@ def main():
     A small business owner has no traditional credit history but has been actively using mobile money services / other fintech service for their daily transactions.  
 
     How AfriCredit AI Helps:  
-    By leveraging non-conventional features such as mobile money transactions, mobile account activity, and etc to determine financial behaviour, AfriCredit AI assesses creditworthiness and provides access to fair credit.  
+    By leveraging non-conventional features such as mobile money transactions,income, amount of data (in GigaBytes) & number of calls, and etc to determine financial behaviour, AfriCredit AI assesses creditworthiness and provides access to fair credit.  
     """)
     st.divider()
 
