@@ -65,10 +65,10 @@ try:
 
     with engine.connect() as conn:
         result = conn.execute("SELECT 1")
-        st.write("✅ Database connection successful!")
+        print("✅ Database connection successful!")
 
 except Exception as e:
-    st.write(f"❌ Connection failed: {e}")
+    print(f"❌ Connection failed: {e}")
     engine = None  # Prevent further errors if the connection fails
 
 # Load data only if connection is successful
