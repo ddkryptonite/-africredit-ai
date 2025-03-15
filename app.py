@@ -9,7 +9,7 @@ import seaborn as sns
 
 # Company branding
 st.sidebar.title("AfriCredit AI")
-st.sidebar.title("Note: This is a prototype for demonstration purposes.Model is ony 83.3% accurate.Model behaviour depends on quality of data")
+st.sidebar.title("Note: This is a prototype for demonstration purposes.Model is only 83.3% accurate.Model behaviour depends on quality of data")
 st.sidebar.write("Helping customers without traditional bank accounts access fair credit.")
 
 # Display feature ranges and descriptions in the sidebar
@@ -149,7 +149,7 @@ def main():
     st.subheader("Case Study: Empowering Unbanked Small Business Owners")
     st.markdown("""
     **Scenario:**   
-    A small business owner has no traditional credit history but has been actively using mobile money services / other fintech service for their daily transactions.  
+    A small business owner has no traditional bank account & credit history but has been actively using mobile money services / other fintech service (eg Cashapp, Moniepoint, chipper cash) for their daily transactions.  
 
     How AfriCredit AI Helps:  
     By leveraging non-conventional features such as mobile money transactions,income, amount of data (in GigaBytes) & number of calls, and etc to determine financial behaviour, AfriCredit AI assesses creditworthiness and provides access to fair credit.  
