@@ -88,13 +88,13 @@ if engine:
         st.write(f"❌ Data loading failed: {e}")
 
 # Feature engineering
-mobilemoney_features = mobilemoney_df.groupby('CustomerID').agg({'Amount': ['sum', 'mean', 'count'], 'Balance': 'mean'}).reset_index()
-mobilemoney_features.columns = ['CustomerID', 'TotalMobileMoneyAmount', 'AverageMobileMoneyAmount', 'MobileMoneyTransactionCount', 'AverageMobileMoneyBalance']
+mobilemoney_features = mobilemoney_df.groupby('customerid').agg({'amount': ['sum', 'mean', 'count'], 'balance': 'mean'}).reset_index()
+mobilemoney_features.columns = ['customerid', 'totalmobilemoneyamount', 'averagemobilemoneyamount', 'mobilemoneytransactioncount', 'averagemobilemoneybalance']
 
 # Merge data
-approval_rates = loanapplications_df.merge(customers_df, on='CustomerID')
-approval_rates = approval_rates.merge(mobilemoney_features, on='CustomerID')
-approval_rates = approval_rates.merge(mobileusage_df, on='CustomerID')
+approval_rates = loanapplications_df.merge(customers_df, on='customerid')
+approval_rates = approval_rates.merge(mobilemoney_features, on='customerid')
+approval_rates = approval_rates.merge(mobileusage_df, on='customerid')
 
 #print(approval_rates.columns)
 
