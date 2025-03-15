@@ -292,7 +292,7 @@ def main():
  
 
     # Input fields for customer features
- st.subheader("Enter Features Values")
+    st.subheader("Enter Features Values")
     col1, col2 = st.columns(2)
     with col1:
         income = st.number_input("Income", min_value=300.0, max_value=12000.0, value=500.0, help="Monthly income of the customer.")
