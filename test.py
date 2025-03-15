@@ -47,4 +47,5 @@ st.write("Columns in mobilemoney_df:", mobilemoney_df.columns)
 mobilemoney_features = mobilemoney_df.groupby('customerid').agg({'amount': ['sum', 'mean', 'count'], 'balance': 'mean'}).reset_index()
 mobilemoney_features.columns = ['customerid', 'totalmobilemoneyamount', 'averagemobilemoneyamount', 'mobilemoneytransactioncount', 'averagemobilemoneybalance']
 
+st.write(mobilemoney_features)
 
