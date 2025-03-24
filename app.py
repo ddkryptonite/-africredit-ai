@@ -65,10 +65,10 @@ try:
 
     with engine.connect() as conn:
         result = conn.execute("SELECT 1")
-        print("✅ Database connection successful!")
+        st.write("✅ Database connection successful!")
 
 except Exception as e:
-    print(f"❌ Connection failed: {e}")
+    st.write(f"❌ Connection failed: {e}")
     engine = None  # Prevent further errors if the connection fails
 
 # Load data only if connection is successful
@@ -82,10 +82,10 @@ if engine:
             transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=conn.connection)
             mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=conn.connection)
         
-        print("✅ Data loaded successfully!")
+        st.write("✅ Data loaded successfully!")
 
     except Exception as e:
-        print(f"❌ Data loading failed: {e}")
+        st.write(f"❌ Data loading failed: {e}")
 
 # Feature engineering
 mobilemoney_features = mobilemoney_df.groupby('customerid').agg({'amount': ['sum', 'mean', 'count'], 'balance': 'mean'}).reset_index()
