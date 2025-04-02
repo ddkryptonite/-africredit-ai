@@ -2,7 +2,7 @@ import os
 import streamlit as st
 import pandas as pd
 import joblib
-from sqlalchemy import create_engine
+# from sqlalchemy import create_engine
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
@@ -37,69 +37,72 @@ st.sidebar.markdown("""
 """)
 st.sidebar.title("Note:Still Under Development.CI/CD.")
 
-# Database connection
+# Database connection - COMMENTED OUT
 # engine = create_engine("mysql+mysqlconnector://root:Danieledem_7@localhost/credit")
 # connection = engine.connect()
 
+# Access environment variables - COMMENTED OUT
+# DB_USERNAME = os.getenv("DB_USERNAME")
+# DB_PASSWORD = os.getenv("DB_PASSWORD")
+# DB_HOST = os.getenv("DB_HOST")  # Redshift cluster endpoint
+# DB_NAME = os.getenv("DB_NAME")
+# DB_PORT = os.getenv("DB_PORT")  # Default Redshift port
 
+# Check if all credentials are set - COMMENTED OUT
+# if None in [DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT]:
+#     st.error("Database environment variables are not set correctly.")
+#     st.stop()
 
-# Access environment variables
-DB_USERNAME = os.getenv("DB_USERNAME")
-DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")  # Redshift cluster endpoint
-DB_NAME = os.getenv("DB_NAME")
-DB_PORT = os.getenv("DB_PORT")  # Default Redshift port
+# Create the Redshift connection - COMMENTED OUT
+# try:
+#     connection_url = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
+#     engine = create_engine(connection_url, connect_args={"options": "-c search_path=public"})
+#     with engine.connect() as conn:
+#         result = conn.execute("SELECT 1")
+#         st.write("✅ Database connection successful!")
+# except Exception as e:
+#     st.write(f"❌ Connection failed: {e}")
+#     engine = None  # Prevent further errors if the connection fails
 
+# Load data only if connection is successful - COMMENTED OUT
+# if engine:
+#     try:
+#         with engine.connect() as conn:
+#             customers_df = pd.read_sql_query("SELECT * FROM customers", con=conn.connection)
+#             creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=conn.connection)
+#             loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=conn.connection)
+#             mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=conn.connection)
+#             transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=conn.connection)
+#             mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=conn.connection)
+#         st.write("✅ Data loaded successfully!")
+#     except Exception as e:
+#         st.write(f"❌ Data loading failed: {e}")
 
-# Check if all credentials are set
-if None in [DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT]:
-    st.error("Database environment variables are not set correctly.")
-    st.stop()
+# Create dummy data for demonstration purposes
+st.warning("⚠️ Running in demo mode with sample data - database connection disabled")
 
-# Create the Redshift connection
-try:
-    connection_url = f"postgresql+psycopg2://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}?sslmode=require"
-    
-    engine = create_engine(connection_url, connect_args={"options": "-c search_path=public"})
+# Create sample data for the app to function
+countries = ["Nigeria", "Ghana", "Kenya", "South Africa"]
+approval_rates = pd.DataFrame({
+    "country": np.random.choice(countries, 100),
+    "income": np.random.uniform(300, 1200, 100),
+    "accountage": np.random.randint(10, 72, 100),
+    "employmentstatus": np.random.choice(["Employed", "Unemployed"], 100),
+    "loanamount": np.random.uniform(100, 1000, 100),
+    "averagemobilemoneybalance": np.random.uniform(150, 2070, 100),
+    "monthlydatausage": np.random.uniform(2.3, 5.5, 100),
+    "averagemonthlycalls": np.random.randint(170, 290, 100),
+    "totalmobilemoneyamount": np.random.uniform(50, 500, 100)
+})
 
+# Feature engineering - COMMENTED OUT ORIGINAL
+# mobilemoney_features = mobilemoney_df.groupby('customerid').agg({'amount': ['sum', 'mean', 'count'], 'balance': 'mean'}).reset_index()
+# mobilemoney_features.columns = ['customerid', 'totalmobilemoneyamount', 'averagemobilemoneyamount', 'mobilemoneytransactioncount', 'averagemobilemoneybalance']
 
-    with engine.connect() as conn:
-        result = conn.execute("SELECT 1")
-        st.write("✅ Database connection successful!")
-
-except Exception as e:
-    st.write(f"❌ Connection failed: {e}")
-    engine = None  # Prevent further errors if the connection fails
-
-# Load data only if connection is successful
-if engine:
-    try:
-        with engine.connect() as conn:
-            customers_df = pd.read_sql_query("SELECT * FROM customers", con=conn.connection)
-            creditscorehistory_df = pd.read_sql_query("SELECT * FROM creditscorehistory", con=conn.connection)
-            loanapplications_df = pd.read_sql_query("SELECT * FROM loanapplications", con=conn.connection)
-            mobileusage_df = pd.read_sql_query("SELECT * FROM mobileusage", con=conn.connection)
-            transactions_df = pd.read_sql_query("SELECT * FROM transactions", con=conn.connection)
-            mobilemoney_df = pd.read_sql_query("SELECT * FROM mobilemoneytransactions", con=conn.connection)
-        
-        st.write("✅ Data loaded successfully!")
-
-    except Exception as e:
-        st.write(f"❌ Data loading failed: {e}")
-
-# Feature engineering
-mobilemoney_features = mobilemoney_df.groupby('customerid').agg({'amount': ['sum', 'mean', 'count'], 'balance': 'mean'}).reset_index()
-mobilemoney_features.columns = ['customerid', 'totalmobilemoneyamount', 'averagemobilemoneyamount', 'mobilemoneytransactioncount', 'averagemobilemoneybalance']
-
-# Merge data
-approval_rates = loanapplications_df.merge(customers_df, on='customerid')
-approval_rates = approval_rates.merge(mobilemoney_features, on='customerid')
-approval_rates = approval_rates.merge(mobileusage_df, on='customerid')
-
-#print(approval_rates.columns)
-
-# One-hot encoding
-#approval_rates = pd.get_dummies(approval_rates, columns=['EmploymentStatus'], drop_first=True)
+# Merge data - COMMENTED OUT ORIGINAL
+# approval_rates = loanapplications_df.merge(customers_df, on='customerid')
+# approval_rates = approval_rates.merge(mobilemoney_features, on='customerid')
+# approval_rates = approval_rates.merge(mobileusage_df, on='customerid')
 
 # Load the trained model
 model = joblib.load('83.3%_credit_scoring_model.pkl')
@@ -125,22 +128,14 @@ def predict_credit_score(customer_features):
         approval_decision = "Rejected : Will Default"
     return credit_score, risk_level, approval_decision, customer_df
 
-
-
 def create_progress_bar(credit_score):
     # Normalize the credit score to a value between 0 and 1
     normalized_score = (credit_score - 300) / (850 - 300)
-
     # Display the progress bar
     st.progress(normalized_score)
     st.write(f"Credit Score: {credit_score:.2f} ({normalized_score * 100:.1f}%)")
 
-
-
-
-
 # Streamlit app
-# Add the table to your app
 def main():
     st.title("AfriCredit AI - Helping Unbanked Customers Access Fair Credit")
     st.write("This web app uses a Machine Learning model with 83.3% accuracy to predict the credit score, risk level, and approval decision for a customer based on their features")
@@ -185,11 +180,7 @@ def main():
     st.dataframe(styled_table, use_container_width=True)
     st.divider()
 
-    # Fetch unique countries from the approval_rates DataFrame
-    countries = approval_rates["country"].unique()
-
-    # Calculate credit scores and risk levels for each country
-    # Calculate credit scores and risk levels for each country
+    # Calculate credit scores and risk levels for each country using sample data
     country_data = []
     for country in countries:
         # Filter customers by country
@@ -205,7 +196,7 @@ def main():
                 'AccountAge': customer['accountage'],
                 'EmploymentStatus_Employed': 1 if customer['employmentstatus'] == 'employed' else 0,
                 'EmploymentStatus_Unemployed': 1 if customer['employmentstatus'] == 'unemployed' else 0,                
-                'Loan Amount': customer['loanamount'],  # Accessible from approval_rates
+                'Loan Amount': customer['loanamount'],
                 'AverageMobileMoneyBalance': customer['averagemobilemoneybalance'],
                 'MonthlyDataUsage': customer['monthlydatausage'],
                 'AverageMonthlyCalls': customer['averagemonthlycalls'],
@@ -272,7 +263,6 @@ def main():
     ax.tick_params(axis='y', colors='gray', labelsize=8)
     ax.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
 
-
     # Create a legend for the risk levels
     from matplotlib.patches import Patch
 
@@ -290,7 +280,6 @@ def main():
     st.pyplot(fig)
     st.divider()
  
-
     # Input fields for customer features
     st.subheader("Enter Features Values")
     col1, col2 = st.columns(2)
@@ -325,14 +314,12 @@ def main():
         st.subheader("Results:")
         st.write(f"**Credit Score:** {credit_score:.2f}")
         st.write(f"**Risk Level:** {risk_level}")
-        #st.write(f"**Approval Decision:** {approval_decision}")
         if approval_decision == "Approved":
             st.success(f"**Approval Decision:** {approval_decision}")
         elif "Rejected" in approval_decision:
             st.error(f"**Approval Decision:** {approval_decision}")
         else:
             st.info(f"**Approval Decision:** {approval_decision}")
-
 
         # Display the progress bar
         st.subheader("Credit Score Visualization")
