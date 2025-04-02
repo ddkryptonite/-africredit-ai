@@ -86,7 +86,7 @@ countries = ["Nigeria", "Ghana", "Kenya", "South Africa"]
 approval_rates = pd.DataFrame({
     "country": np.random.choice(countries, 100),
     #"income": np.random.uniform(300, 1200, 100),
-    "income": np.round(np.random.normal(loc=750, scale=200, size=100), 2)
+    "income": np.round(np.random.normal(loc=750, scale=200, size=100), 2),
     "accountage": np.random.randint(10, 72, 100),
     "employmentstatus": np.random.choice(["Employed", "Unemployed"], 100),
     "loanamount": np.random.uniform(100, 1000, 100),
